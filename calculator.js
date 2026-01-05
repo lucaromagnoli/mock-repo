@@ -13,7 +13,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  // BUG: No check for division by zero!
+  if (b === 0) {
+    throw new Error('Cannot divide by zero');
+  }
   return a / b;
 }
 
