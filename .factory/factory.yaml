@@ -1,0 +1,134 @@
+factory:
+  name: sdlc
+  version: v1.0.0
+  description: "Kubernetes-based SDLC automation with Argo Workflows for feature development"
+  platform: k8s
+  runtime: argo
+  requires:
+    executables:
+      - name: kubectl
+        versionCmd: "kubectl version --client"
+      - name: helm
+        versionCmd: "helm version"
+      - name: argo
+        versionCmd: "argo version"
+      - name: claude
+        versionCmd: "claude --version"
+      - name: gh
+        versionCmd: "gh --version"
+  install-help: |
+    Next steps:
+      1. Populate 00-context/README.md with your project overview
+         This file provides critical context for Claude agents about your codebase,
+         architecture, and conventions. Without it, agents lack project understanding.
+
+      2. Commit factory configuration to version control:
+         git add .factoryrc .factory
+         git commit -m "Add factory configuration"
+
+      3. Configure credentials: factory credentials
+
+      4. Submit workflows: factory submit handle-feature -- --feature-id 001-example --feature-file feature.md --branch main
+
+    ⚠ Important:
+      - Populate 00-context/README.md before running workflows
+      - Commit .factoryrc and .factory/ to share configuration with your team
+      - Configure credentials before submitting workflows: factory credentials
+  ephemeral:
+    patterns:
+      - .factory/chart/**
+  precious:
+    patterns:
+      - 00-context/**
+  hooks:
+    post-install: scripts/install.sh
+    pre-uninstall: scripts/uninstall.sh
+    pre-submit: scripts/pre-submit.sh
+
+  workflows:
+    handle-feature:
+      parameters:
+        - name: feature-id
+          description: "Feature ID (e.g., 001-bootstrap)"
+          required: true
+        - name: feature-dir
+          description: "Feature directory path (e.g., 01-features/001-bootstrap)"
+          required: true
+        - name: repo
+          description: "Repository in format owner/repo or https://github.com/owner/repo"
+          required: true
+        - name: branch
+          description: "Branch to checkout"
+          default: "main"
+        - name: feature-content-configmap
+          description: "Optional: ConfigMap containing feature.md content"
+          default: ""
+        - name: pr
+          description: "Optional: PR number to fetch review feedback from"
+          default: ""
+        - name: dry-run
+          description: "Optional: Preview changes without modifying files"
+          default: "false"
+      file-params:
+        feature-file:
+          configmapKey: "feature.md"
+          configmapNameParam: "feature-content-configmap"
+          requiredWith: "feature-id"
+      derived-params:
+        feature-id:
+          derives: "feature-dir"
+          pattern: "01-features/{feature-id}"
+          validate: "^[0-9]{3}-[a-z0-9-]+$"
+          errorMessage: "Invalid feature-id format. Expected: ###-name (e.g., 001-bootstrap)"
+
+    install-marketplace:
+      parameters:
+        - name: pvc-name
+          description: "PVC name to mount"
+          required: true
+
+  credentials:
+    - name: git-username
+      secret-key: username
+      display-name: "GitHub Username"
+      prompt-message: "Enter GitHub username (default: x-access-token):"
+      input-type: input
+      required: false
+      default-value: "x-access-token"
+
+    - name: git-token
+      secret-key: token
+      display-name: "GitHub Token"
+      prompt-message: "Enter your GitHub Personal Access Token (PAT):"
+      input-type: password
+      required: true
+
+    - name: claude-api-key
+      secret-key: api-key
+      display-name: "Claude API Key"
+      prompt-message: "Enter your Claude API key:"
+      input-type: password
+      required: true
+
+    - name: claude-config
+      secret-key: base-url
+      display-name: "Claude API Base URL"
+      prompt-message: "Enter Claude API base URL:"
+      input-type: input
+      required: false
+      default-value: "https://api.anthropic.com"
+
+    - name: openai-api-key
+      secret-key: api-key
+      display-name: "OpenAI API Key"
+      prompt-message: "Enter your OpenAI API key (optional - required for knowledge base):"
+      input-type: password
+      required: false
+
+    - name: openai-config
+      secret-key: base-url
+      display-name: "OpenAI API Base URL"
+      prompt-message: "Enter OpenAI API base URL:"
+      input-type: input
+      required: false
+      default-value: "https://api.openai.com/v1"
