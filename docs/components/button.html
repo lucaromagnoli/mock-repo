@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Button Component Documentation - Variants, sizes, states, and usage examples">
+  <title>Button Component - Component Library</title>
+  <link rel="stylesheet" href="../../src/styles/main.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body class="demo-page">
+  <!-- Navigation -->
+  <nav class="demo-nav" aria-label="Documentation navigation">
+    <a href="index.html" class="demo-nav__logo">Component Library</a>
+    <div class="demo-nav__links">
+      <a href="index.html" class="demo-nav__link">Home</a>
+      <a href="button.html" class="demo-nav__link demo-nav__link--active">Button</a>
+      <a href="input.html" class="demo-nav__link">Input</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-content">
+    <h1>Button Component</h1>
+    <p class="demo-section__description">
+      A flexible, accessible button component with multiple variants, sizes, and states.
+      Supports loading states, icons, and full keyboard navigation.
+    </p>
+
+    <!-- Interactive Demo -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Interactive Demo</h2>
+      <p class="demo-section__description">
+        Customize the button properties to see how it looks and get the code.
+      </p>
+
+      <div class="demo-example" data-demo="button">
+        <div class="demo-preview demo-preview--centered" style="min-height: 100px;">
+          <!-- Preview will be rendered here -->
+        </div>
+        <div class="demo-controls">
+          <div class="demo-control">
+            <label class="demo-control__label" for="btn-text">Text</label>
+            <input type="text" id="btn-text" class="demo-control__input" data-control="text" value="Click me">
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__label" for="btn-variant">Variant</label>
+            <select id="btn-variant" class="demo-control__select" data-control="variant">
+              <option value="primary">Primary</option>
+              <option value="secondary">Secondary</option>
+              <option value="tertiary">Tertiary</option>
+              <option value="danger">Danger</option>
+            </select>
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__label" for="btn-size">Size</label>
+            <select id="btn-size" class="demo-control__select" data-control="size">
+              <option value="small">Small</option>
+              <option value="medium" selected>Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__checkbox">
+              <input type="checkbox" data-control="disabled">
+              Disabled
+            </label>
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__checkbox">
+              <input type="checkbox" data-control="loading">
+              Loading
+            </label>
+          </div>
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Code will update based on controls</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Variants -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Variants</h2>
+      <p class="demo-section__description">
+        Different button variants for different purposes. Use Primary for main actions,
+        Secondary for alternative actions, Tertiary for low-emphasis actions, and Danger for destructive actions.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--row" id="variants-preview">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Primary - Main action
+new Button({ text: 'Primary', variant: 'primary' });
+
+// Secondary - Alternative action
+new Button({ text: 'Secondary', variant: 'secondary' });
+
+// Tertiary - Low-emphasis action
+new Button({ text: 'Tertiary', variant: 'tertiary' });
+
+// Danger - Destructive action
+new Button({ text: 'Danger', variant: 'danger' });</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sizes -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Sizes</h2>
+      <p class="demo-section__description">
+        Three sizes available: Small for compact interfaces, Medium (default) for most use cases,
+        and Large for prominent actions. All sizes meet touch target requirements.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--row" id="sizes-preview">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Small (32px height, 44px on mobile)
+new Button({ text: 'Small', size: 'small' });
+
+// Medium - Default (40px height)
+new Button({ text: 'Medium', size: 'medium' });
+
+// Large (48px height - WCAG recommended)
+new Button({ text: 'Large', size: 'large' });</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- States -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">States</h2>
+      <p class="demo-section__description">
+        Buttons support various states including default, hover, focus, active, disabled, and loading.
+        Each state has distinct visual feedback.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--row" id="states-preview">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Default state
+new Button({ text: 'Default' });
+
+// Disabled state
+new Button({ text: 'Disabled', disabled: true });
+
+// Loading state
+new Button({ text: 'Loading', loading: true });
+
+// Update state dynamically
+button.setLoading(true);
+button.setDisabled(true);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Reference -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">API Reference</h2>
+
+      <h3 style="margin-top: var(--spacing-lg);">Constructor Options</h3>
+      <table class="demo-api-table">
+        <thead>
+          <tr>
+            <th>Prop</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="demo-api-table__prop">text</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Button label text</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">variant</td>
+            <td class="demo-api-table__type">'primary' | 'secondary' | 'tertiary' | 'danger'</td>
+            <td class="demo-api-table__default">'primary'</td>
+            <td>Visual variant of the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">size</td>
+            <td class="demo-api-table__type">'small' | 'medium' | 'large'</td>
+            <td class="demo-api-table__default">'medium'</td>
+            <td>Size of the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">type</td>
+            <td class="demo-api-table__type">'button' | 'submit' | 'reset'</td>
+            <td class="demo-api-table__default">'button'</td>
+            <td>HTML button type attribute</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">disabled</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Disables the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">loading</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Shows loading spinner</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">icon</td>
+            <td class="demo-api-table__type">string | HTMLElement</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Icon HTML or element</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">iconPosition</td>
+            <td class="demo-api-table__type">'left' | 'right'</td>
+            <td class="demo-api-table__default">'left'</td>
+            <td>Position of the icon</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">ariaLabel</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Accessible label for screen readers</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">onClick</td>
+            <td class="demo-api-table__type">Function</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Click event handler</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">fullWidth</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Makes button full width</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top: var(--spacing-lg);">Methods</h3>
+      <table class="demo-api-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Arguments</th>
+            <th>Returns</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="demo-api-table__prop">render()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">HTMLButtonElement</td>
+            <td>Renders and returns the button element</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">update(props)</td>
+            <td class="demo-api-table__type">Object</td>
+            <td>-</td>
+            <td>Updates button properties</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">setLoading(loading)</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>-</td>
+            <td>Sets the loading state</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">setDisabled(disabled)</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>-</td>
+            <td>Sets the disabled state</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">click()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Programmatically clicks the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">focus()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Focuses the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">blur()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Blurs the button</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">destroy()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Removes event listeners and cleans up</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Accessibility -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Accessibility</h2>
+      <div class="demo-a11y">
+        <h3 class="demo-a11y__title">
+          <span aria-hidden="true">&#x2713;</span>
+          Accessibility Features
+        </h3>
+        <ul class="demo-a11y__list">
+          <li><strong>Keyboard Navigation:</strong> Tab to focus, Enter/Space to activate</li>
+          <li><strong>Focus Indicator:</strong> Visible focus ring with 3:1 contrast ratio</li>
+          <li><strong>Screen Reader Support:</strong> Proper button semantics, aria-disabled, aria-busy for loading</li>
+          <li><strong>Loading State:</strong> aria-busy="true" announced to assistive technology</li>
+          <li><strong>Disabled State:</strong> aria-disabled="true" prevents interaction</li>
+          <li><strong>Touch Target:</strong> Minimum 44x44px on mobile devices</li>
+          <li><strong>Visual Feedback:</strong> Hover, active, and focus states don't rely on color alone</li>
+        </ul>
+      </div>
+
+      <div class="demo-example" style="margin-top: var(--spacing-md);">
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">Keyboard Shortcuts</span>
+          </div>
+          <pre><code>Tab       - Move focus to button
+Enter     - Activate button
+Space     - Activate button
+Shift+Tab - Move focus away from button</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Browser Support -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Browser Support</h2>
+      <div class="demo-browser-support">
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Chrome (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Firefox (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Safari (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Edge (latest)</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../../src/components/Button/Button.js"></script>
+  <script src="demo.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Variants preview
+      const variantsPreview = document.getElementById('variants-preview');
+      if (variantsPreview) {
+        ['primary', 'secondary', 'tertiary', 'danger'].forEach(variant => {
+          const btn = new Button({
+            text: variant.charAt(0).toUpperCase() + variant.slice(1),
+            variant: variant
+          });
+          variantsPreview.appendChild(btn.render());
+        });
+      }
+
+      // Sizes preview
+      const sizesPreview = document.getElementById('sizes-preview');
+      if (sizesPreview) {
+        ['small', 'medium', 'large'].forEach(size => {
+          const btn = new Button({
+            text: size.charAt(0).toUpperCase() + size.slice(1),
+            size: size
+          });
+          sizesPreview.appendChild(btn.render());
+        });
+      }
+
+      // States preview
+      const statesPreview = document.getElementById('states-preview');
+      if (statesPreview) {
+        const defaultBtn = new Button({ text: 'Default' });
+        const disabledBtn = new Button({ text: 'Disabled', disabled: true });
+        const loadingBtn = new Button({ text: 'Loading', loading: true });
+
+        statesPreview.appendChild(defaultBtn.render());
+        statesPreview.appendChild(disabledBtn.render());
+        statesPreview.appendChild(loadingBtn.render());
+      }
+    });
+  </script>
+</body>
+</html>

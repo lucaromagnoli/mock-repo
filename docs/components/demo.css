@@ -1,0 +1,404 @@
+/**
+ * Component Documentation Demo Styles
+ * ====================================
+ * Shared styles for the component documentation pages.
+ */
+
+/* ============================================
+   Demo Page Layout
+   ============================================
+*/
+
+.demo-page {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.demo-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--color-neutral-900);
+  color: var(--color-text-inverse);
+}
+
+.demo-nav__logo {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.demo-nav__links {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-left: auto;
+}
+
+.demo-nav__link {
+  color: var(--color-neutral-300);
+  text-decoration: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.demo-nav__link:hover,
+.demo-nav__link--active {
+  color: var(--color-text-inverse);
+  background-color: var(--color-neutral-700);
+}
+
+.demo-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* ============================================
+   Demo Sections
+   ============================================
+*/
+
+.demo-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.demo-section__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-neutral-200);
+}
+
+.demo-section__description {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+  max-width: 75ch;
+}
+
+/* ============================================
+   Demo Examples
+   ============================================
+*/
+
+.demo-example {
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.demo-example__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-example__description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Preview area */
+.demo-preview {
+  padding: var(--spacing-lg);
+  background-color: var(--color-background);
+}
+
+.demo-preview--dark {
+  background-color: var(--color-neutral-900);
+}
+
+.demo-preview--centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-preview--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.demo-preview--row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.demo-preview--column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Code area */
+.demo-code {
+  padding: var(--spacing-md);
+  background-color: var(--color-neutral-900);
+  overflow-x: auto;
+}
+
+.demo-code__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-code__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demo-code__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-neutral-300);
+  background-color: var(--color-neutral-800);
+  border: 1px solid var(--color-neutral-700);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.demo-code__copy:hover {
+  background-color: var(--color-neutral-700);
+}
+
+.demo-code__copy--copied {
+  color: var(--color-success-500);
+}
+
+.demo-code pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow-x: auto;
+}
+
+.demo-code code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-100);
+  background: transparent;
+  padding: 0;
+  white-space: pre;
+}
+
+/* ============================================
+   API Table
+   ============================================
+*/
+
+.demo-api-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.demo-api-table th,
+.demo-api-table td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.demo-api-table th {
+  font-weight: var(--font-weight-semibold);
+  background-color: var(--color-neutral-50);
+  color: var(--color-text-primary);
+}
+
+.demo-api-table td {
+  color: var(--color-text-secondary);
+}
+
+.demo-api-table code {
+  font-size: var(--font-size-xs);
+  padding: 0.125rem 0.375rem;
+  background-color: var(--color-neutral-100);
+  border-radius: var(--radius-sm);
+}
+
+.demo-api-table__prop {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-700);
+}
+
+.demo-api-table__type {
+  font-family: var(--font-family-mono);
+  color: var(--color-secondary-700);
+}
+
+.demo-api-table__default {
+  font-family: var(--font-family-mono);
+  color: var(--color-neutral-600);
+}
+
+/* ============================================
+   Interactive Demo Controls
+   ============================================
+*/
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-neutral-50);
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+.demo-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.demo-control__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demo-control__select,
+.demo-control__input {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+}
+
+.demo-control__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+/* ============================================
+   Accessibility Notes
+   ============================================
+*/
+
+.demo-a11y {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background-color: var(--color-primary-50);
+  border-left: 4px solid var(--color-primary-500);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.demo-a11y__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-700);
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-a11y__list {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+  color: var(--color-text-secondary);
+}
+
+.demo-a11y__list li {
+  margin-bottom: var(--spacing-xs);
+  list-style-type: disc;
+}
+
+/* ============================================
+   Browser Support Table
+   ============================================
+*/
+
+.demo-browser-support {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-md);
+}
+
+.demo-browser {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.demo-browser__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.demo-browser__status {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background-color: var(--color-success-500);
+}
+
+.demo-browser__status--partial {
+  background-color: var(--color-warning-500);
+}
+
+.demo-browser__status--none {
+  background-color: var(--color-error-500);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+*/
+
+@media (max-width: 767px) {
+  .demo-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .demo-nav__links {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .demo-content {
+    padding: var(--spacing-md);
+  }
+
+  .demo-preview--row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .demo-controls {
+    flex-direction: column;
+  }
+
+  .demo-api-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

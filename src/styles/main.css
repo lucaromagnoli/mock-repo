@@ -1,0 +1,32 @@
+/**
+ * Main Stylesheet
+ * ===============
+ * Entry point for the design system and component styles.
+ * Import this file in your HTML to include all design system styles.
+ *
+ * Usage in HTML:
+ *   <link rel="stylesheet" href="src/styles/main.css">
+ *
+ * Import order matters:
+ * 1. Tokens - CSS custom properties (variables)
+ * 2. Base - CSS reset and typography
+ * 3. Utilities - Helper classes
+ * 4. Components Base - Shared component styles
+ * 5. Individual Components - Button, Input, etc.
+ */
+
+/* Design system tokens */
+@import url('./tokens.css');
+
+/* CSS reset and base typography */
+@import url('./base.css');
+
+/* Utility classes */
+@import url('./utilities.css');
+
+/* Shared component styles */
+@import url('./components-base.css');
+
+/* Component styles */
+@import url('../components/Button/Button.css');
+@import url('../components/Input/Input.css');

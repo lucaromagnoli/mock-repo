@@ -1,0 +1,373 @@
+/**
+ * Input Component Styles
+ * ======================
+ * Styles for the Input component including label, help text,
+ * error messages, and all states.
+ * Uses BEM naming convention: .input-field, .input-field--state, .input-field__element
+ */
+
+/* ============================================
+   Input Field Container
+   ============================================
+*/
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.input-field:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   Label Styles
+   ============================================
+*/
+
+.input-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-base);
+}
+
+.input-field__required {
+  color: var(--color-error-500);
+  font-weight: var(--font-weight-normal);
+}
+
+/* ============================================
+   Input Element Base
+   ============================================
+*/
+
+.input-field__input {
+  /* Reset */
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+
+  /* Layout */
+  width: 100%;
+  min-height: 2.75rem; /* 44px - WCAG touch target */
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+
+  /* Appearance */
+  background-color: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  /* Transitions */
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+/* Placeholder */
+.input-field__input::placeholder {
+  color: var(--color-text-disabled);
+  opacity: 1;
+}
+
+/* ============================================
+   Input States
+   ============================================
+*/
+
+/* Hover state */
+.input-field__input:hover:not(:disabled):not(:focus) {
+  border-color: var(--color-neutral-400);
+}
+
+/* Focus state */
+.input-field__input:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Focus visible (keyboard focus) */
+.input-field__input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Disabled state */
+.input-field__input:disabled,
+.input-field--disabled .input-field__input {
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Read-only state */
+.input-field__input:read-only {
+  background-color: var(--color-neutral-50);
+  cursor: default;
+}
+
+/* Error state */
+.input-field--error .input-field__input {
+  border-color: var(--color-error-500);
+}
+
+.input-field--error .input-field__input:focus {
+  box-shadow: var(--shadow-focus-error);
+}
+
+/* Error state label */
+.input-field--error .input-field__label {
+  color: var(--color-error-700);
+}
+
+/* Focus state container modifier (for visual indicator) */
+.input-field--focused .input-field__input {
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-focus);
+}
+
+/* ============================================
+   Help Text
+   ============================================
+*/
+
+.input-field__help {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-base);
+}
+
+/* ============================================
+   Error Message
+   ============================================
+*/
+
+.input-field__error {
+  display: none;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-error-50);
+  border-radius: var(--radius-sm);
+  animation: slideDown var(--transition-base) ease-out;
+}
+
+/* Show error when in error state */
+.input-field--error .input-field__error {
+  display: flex;
+}
+
+.input-field__error-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-error-500);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+}
+
+.input-field__error-text {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  color: var(--color-error-700);
+  line-height: var(--line-height-base);
+}
+
+/* ============================================
+   Input Types
+   ============================================
+*/
+
+/* Number input - hide default spinners */
+.input-field__input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-field__input[type="number"]::-webkit-inner-spin-button,
+.input-field__input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Password input - with toggle button space */
+.input-field--password .input-field__input {
+  padding-right: 3rem;
+}
+
+/* ============================================
+   Password Toggle
+   ============================================
+*/
+
+.input-field__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-field__toggle {
+  position: absolute;
+  right: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.input-field__toggle:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-neutral-100);
+}
+
+.input-field__toggle:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.input-field__toggle-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ============================================
+   Character Counter
+   ============================================
+*/
+
+.input-field__counter {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.input-field__counter--warning {
+  color: var(--color-warning-700);
+}
+
+.input-field__counter--error {
+  color: var(--color-error-500);
+}
+
+/* ============================================
+   Animations
+   ============================================
+*/
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.input-field--shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ============================================
+   Input Sizes
+   ============================================
+*/
+
+/* Small */
+.input-field--small .input-field__input {
+  min-height: 2.25rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.input-field--small .input-field__label {
+  font-size: var(--font-size-xs);
+}
+
+/* Large */
+.input-field--large .input-field__input {
+  min-height: 3.25rem;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+.input-field--large .input-field__label {
+  font-size: var(--font-size-base);
+}
+
+/* ============================================
+   Full Width
+   ============================================
+*/
+
+.input-field--full-width {
+  width: 100%;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+*/
+
+@media (max-width: 767px) {
+  .input-field__input {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .input-field__input {
+    transition: none;
+  }
+
+  .input-field__error {
+    animation: none;
+  }
+
+  .input-field--shake {
+    animation: none;
+  }
+}

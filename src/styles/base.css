@@ -1,0 +1,235 @@
+/**
+ * Base Styles
+ * ===========
+ * CSS reset and foundational styles for the application.
+ * Includes normalization, box-sizing, and base typography.
+ */
+
+/* ============================================
+   CSS Reset / Normalize
+   ============================================
+   Modern CSS reset for consistent cross-browser rendering.
+*/
+
+/* Box sizing for all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margins */
+body,
+h1, h2, h3, h4, h5, h6,
+p,
+ul, ol,
+figure,
+blockquote,
+dl, dd {
+  margin: 0;
+}
+
+/* Remove default padding and list styles */
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+/* HTML and Body base */
+html {
+  font-size: 100%; /* 16px base for rem calculations */
+  scroll-behavior: smooth;
+  /* Prevent text size adjustment on orientation change in iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   Typography
+   ============================================
+*/
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--font-size-4xl); }
+h2 { font-size: var(--font-size-3xl); }
+h3 { font-size: var(--font-size-2xl); }
+h4 { font-size: var(--font-size-xl); }
+h5 { font-size: var(--font-size-lg); }
+h6 { font-size: var(--font-size-base); }
+
+/* Paragraphs */
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Links */
+a {
+  color: var(--color-primary-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-500);
+}
+
+/* Strong and emphasis */
+strong, b {
+  font-weight: var(--font-weight-bold);
+}
+
+em, i {
+  font-style: italic;
+}
+
+/* Small text */
+small {
+  font-size: var(--font-size-sm);
+}
+
+/* Code and preformatted text */
+code, kbd, samp, pre {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+}
+
+code {
+  padding: 0.125rem 0.25rem;
+  background-color: var(--color-neutral-100);
+  border-radius: var(--radius-sm);
+}
+
+pre {
+  padding: var(--spacing-md);
+  background-color: var(--color-neutral-100);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+}
+
+/* ============================================
+   Images and Media
+   ============================================
+*/
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================
+   Form Elements Base
+   ============================================
+*/
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Input base */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Remove default appearance */
+input,
+textarea,
+select,
+button {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ============================================
+   Focus Styles
+   ============================================
+   Accessible focus indicators for keyboard navigation.
+   Uses focus-visible to show focus only for keyboard users.
+*/
+
+/* Default focus for all focusable elements */
+:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Remove outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Visible focus for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+/* ============================================
+   Selection Styles
+   ============================================
+*/
+
+::selection {
+  background-color: var(--color-primary-200);
+  color: var(--color-text-primary);
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================
+   Respect user preference for reduced motion.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

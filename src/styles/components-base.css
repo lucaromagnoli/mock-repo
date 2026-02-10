@@ -1,0 +1,362 @@
+/**
+ * Component Base Styles
+ * ====================
+ * Shared styles for all UI components.
+ * Includes focus states, transitions, and accessibility helpers.
+ */
+
+/* ============================================
+   Interactive Element Base
+   ============================================
+   Shared styles for buttons, inputs, and other interactive elements.
+*/
+
+/**
+ * Base interactive element styles
+ * Applied to buttons, inputs, selects, etc.
+ */
+.interactive {
+  /* Reset */
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+
+  /* Transitions */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+/* ============================================
+   Focus Styles
+   ============================================
+   Consistent focus indicators for all interactive components.
+   Uses box-shadow for better visibility on various backgrounds.
+*/
+
+/**
+ * Default focus ring
+ * Blue focus ring for standard interactive elements.
+ */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+/**
+ * Error focus ring
+ * Red focus ring for elements in error state.
+ */
+.focus-ring--error:focus-visible {
+  outline: 2px solid var(--color-error-500);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus-error);
+}
+
+/**
+ * Remove focus ring for mouse users
+ * Uses :focus:not(:focus-visible) for progressive enhancement.
+ */
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ============================================
+   Disabled States
+   ============================================
+   Consistent disabled styling across components.
+*/
+
+/**
+ * Disabled element base styles
+ * Reduced opacity and not-allowed cursor.
+ */
+.disabled,
+[disabled],
+[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Loading States
+   ============================================
+   Shared loading indicator styles.
+*/
+
+/**
+ * Loading spinner animation
+ */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Loading spinner base
+ * CSS-only spinner using border and animation.
+ */
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+/**
+ * Spinner sizes
+ */
+.spinner--sm {
+  width: 0.875em;
+  height: 0.875em;
+  border-width: 1.5px;
+}
+
+.spinner--lg {
+  width: 1.25em;
+  height: 1.25em;
+  border-width: 2.5px;
+}
+
+/**
+ * Loading state overlay
+ * Semi-transparent overlay for loading states.
+ */
+.loading-overlay {
+  position: relative;
+}
+
+.loading-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* ============================================
+   Animation Utilities
+   ============================================
+   Common animations for component interactions.
+*/
+
+/**
+ * Fade in animation
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-base) ease-in-out;
+}
+
+/**
+ * Slide down animation
+ * Used for dropdowns, error messages, etc.
+ */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown var(--transition-base) ease-out;
+}
+
+/**
+ * Shake animation
+ * Used for error states to draw attention.
+ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/**
+ * Pulse animation
+ * Used for loading or attention states.
+ */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Form Layout Helpers
+   ============================================
+   Common form layouts and structures.
+*/
+
+/**
+ * Form group container
+ * Standard spacing for form field groups.
+ */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/**
+ * Inline form layout
+ * Horizontal form layout for compact forms.
+ */
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: flex-end;
+}
+
+/**
+ * Form actions container
+ * Container for form submit/cancel buttons.
+ */
+.form-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-lg);
+}
+
+.form-actions--right {
+  justify-content: flex-end;
+}
+
+.form-actions--center {
+  justify-content: center;
+}
+
+/* ============================================
+   Icon Base Styles
+   ============================================
+   Styles for inline icons within components.
+*/
+
+/**
+ * Icon base
+ * Ensures consistent icon sizing and alignment.
+ */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
+/**
+ * Icon sizes
+ */
+.icon--sm {
+  width: 0.875em;
+  height: 0.875em;
+}
+
+.icon--lg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+/* ============================================
+   Screen Reader Announcements
+   ============================================
+   Styles for live regions and announcements.
+*/
+
+/**
+ * Live region for screen reader announcements
+ * Hidden visually but announced by screen readers.
+ */
+.live-region {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   Responsive Helpers
+   ============================================
+*/
+
+/**
+ * Hide on small screens
+ */
+@media (max-width: 767px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/**
+ * Hide on large screens
+ */
+@media (min-width: 768px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+/**
+ * Full width on mobile
+ */
+@media (max-width: 767px) {
+  .full-width-mobile {
+    width: 100%;
+  }
+}

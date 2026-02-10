@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Input Component Documentation - Types, validation, states, and usage examples">
+  <title>Input Component - Component Library</title>
+  <link rel="stylesheet" href="../../src/styles/main.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body class="demo-page">
+  <!-- Navigation -->
+  <nav class="demo-nav" aria-label="Documentation navigation">
+    <a href="index.html" class="demo-nav__logo">Component Library</a>
+    <div class="demo-nav__links">
+      <a href="index.html" class="demo-nav__link">Home</a>
+      <a href="button.html" class="demo-nav__link">Button</a>
+      <a href="input.html" class="demo-nav__link demo-nav__link--active">Input</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-content">
+    <h1>Input Component</h1>
+    <p class="demo-section__description">
+      A flexible, accessible input field component with built-in validation,
+      error handling, and support for multiple input types.
+    </p>
+
+    <!-- Interactive Demo -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Interactive Demo</h2>
+      <p class="demo-section__description">
+        Customize the input properties to see how it looks and get the code.
+      </p>
+
+      <div class="demo-example" data-demo="input">
+        <div class="demo-preview" style="min-height: 120px; max-width: 400px;">
+          <!-- Preview will be rendered here -->
+        </div>
+        <div class="demo-controls">
+          <div class="demo-control">
+            <label class="demo-control__label" for="input-type">Type</label>
+            <select id="input-type" class="demo-control__select" data-control="type">
+              <option value="text">Text</option>
+              <option value="email">Email</option>
+              <option value="password">Password</option>
+              <option value="number">Number</option>
+              <option value="tel">Telephone</option>
+            </select>
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__label" for="input-label">Label</label>
+            <input type="text" id="input-label" class="demo-control__input" data-control="label" value="Email Address">
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__label" for="input-placeholder">Placeholder</label>
+            <input type="text" id="input-placeholder" class="demo-control__input" data-control="placeholder" value="you@example.com">
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__label" for="input-help">Help Text</label>
+            <input type="text" id="input-help" class="demo-control__input" data-control="helpText" value="We'll never share your email.">
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__checkbox">
+              <input type="checkbox" data-control="required">
+              Required
+            </label>
+          </div>
+          <div class="demo-control">
+            <label class="demo-control__checkbox">
+              <input type="checkbox" data-control="disabled">
+              Disabled
+            </label>
+          </div>
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Code will update based on controls</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Input Types -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Input Types</h2>
+      <p class="demo-section__description">
+        Supports common input types including text, email, password, number, and telephone.
+        Each type includes appropriate keyboard behavior and validation.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--column" id="types-preview" style="max-width: 400px;">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Text input
+new Input({ type: 'text', label: 'Full Name', placeholder: 'John Doe' });
+
+// Email input
+new Input({ type: 'email', label: 'Email', placeholder: 'you@example.com' });
+
+// Password input (with visibility toggle)
+new Input({ type: 'password', label: 'Password', placeholder: 'Enter password' });
+
+// Number input
+new Input({ type: 'number', label: 'Age', placeholder: '25' });
+
+// Telephone input
+new Input({ type: 'tel', label: 'Phone', placeholder: '+1 (555) 123-4567' });</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Validation -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Validation</h2>
+      <p class="demo-section__description">
+        Built-in validators for common patterns. Validators can be composed and customized.
+        Validation can be triggered on input, blur, or submit.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--column" id="validation-preview" style="max-width: 400px;">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Required field
+new Input({
+  label: 'Username',
+  required: true,
+  validators: [validators.required('Username is required')]
+});
+
+// Email validation
+new Input({
+  type: 'email',
+  label: 'Email',
+  validators: [validators.email('Please enter a valid email')]
+});
+
+// Length validation
+new Input({
+  label: 'Password',
+  type: 'password',
+  validators: [
+    validators.required(),
+    validators.minLength(8, 'Must be at least 8 characters')
+  ]
+});
+
+// Custom validation
+new Input({
+  label: 'Custom',
+  validators: [
+    validators.custom(
+      value => !value.includes('test'),
+      'Cannot contain "test"'
+    )
+  ]
+});</code></pre>
+        </div>
+      </div>
+
+      <h3 style="margin-top: var(--spacing-lg);">Available Validators</h3>
+      <table class="demo-api-table">
+        <thead>
+          <tr>
+            <th>Validator</th>
+            <th>Usage</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="demo-api-table__prop">required</td>
+            <td><code>validators.required(message?)</code></td>
+            <td>Checks if the field has a value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">email</td>
+            <td><code>validators.email(message?)</code></td>
+            <td>Validates email format</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">minLength</td>
+            <td><code>validators.minLength(min, message?)</code></td>
+            <td>Minimum string length</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">maxLength</td>
+            <td><code>validators.maxLength(max, message?)</code></td>
+            <td>Maximum string length</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">pattern</td>
+            <td><code>validators.pattern(regex, message?)</code></td>
+            <td>Regular expression match</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">min</td>
+            <td><code>validators.min(value, message?)</code></td>
+            <td>Minimum number value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">max</td>
+            <td><code>validators.max(value, message?)</code></td>
+            <td>Maximum number value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">url</td>
+            <td><code>validators.url(message?)</code></td>
+            <td>Validates URL format</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">phone</td>
+            <td><code>validators.phone(message?)</code></td>
+            <td>Validates phone number format</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">matches</td>
+            <td><code>validators.matches(getValue, message?)</code></td>
+            <td>Matches another field's value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">custom</td>
+            <td><code>validators.custom(fn, message)</code></td>
+            <td>Custom validation function</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">compose</td>
+            <td><code>validators.compose(...validators)</code></td>
+            <td>Compose multiple validators (AND)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- States -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">States</h2>
+      <p class="demo-section__description">
+        Inputs support various states including default, focus, error, disabled, and readonly.
+        Error messages are displayed with clear visual feedback.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-preview demo-preview--column" id="states-preview" style="max-width: 400px;">
+          <!-- Will be rendered by JS -->
+        </div>
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Default state
+new Input({ label: 'Default', placeholder: 'Enter text...' });
+
+// With error
+const input = new Input({ label: 'With Error' });
+input.showError('This field has an error');
+
+// Disabled state
+new Input({ label: 'Disabled', disabled: true, value: 'Cannot edit' });
+
+// Readonly state
+new Input({ label: 'Readonly', readonly: true, value: 'Read only value' });</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Reference -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">API Reference</h2>
+
+      <h3 style="margin-top: var(--spacing-lg);">Constructor Options</h3>
+      <table class="demo-api-table">
+        <thead>
+          <tr>
+            <th>Prop</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="demo-api-table__prop">type</td>
+            <td class="demo-api-table__type">'text' | 'email' | 'password' | 'number' | 'tel' | 'url'</td>
+            <td class="demo-api-table__default">'text'</td>
+            <td>Input type</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">name</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Form field name</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">id</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">auto-generated</td>
+            <td>Unique ID for label association</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">value</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Initial/current value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">label</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Visible label text</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">placeholder</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Placeholder text</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">helpText</td>
+            <td class="demo-api-table__type">string</td>
+            <td class="demo-api-table__default">''</td>
+            <td>Help text below input</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">required</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Marks field as required</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">disabled</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Disables the input</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">readonly</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td class="demo-api-table__default">false</td>
+            <td>Makes input read-only</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">validators</td>
+            <td class="demo-api-table__type">Function[]</td>
+            <td class="demo-api-table__default">[]</td>
+            <td>Array of validator functions</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">validateOn</td>
+            <td class="demo-api-table__type">'input' | 'blur' | 'submit'</td>
+            <td class="demo-api-table__default">'blur'</td>
+            <td>When to trigger validation</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">onInput</td>
+            <td class="demo-api-table__type">Function</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Input event handler</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">onChange</td>
+            <td class="demo-api-table__type">Function</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Change event handler</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">onValidate</td>
+            <td class="demo-api-table__type">Function</td>
+            <td class="demo-api-table__default">null</td>
+            <td>Validation callback (isValid, error)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top: var(--spacing-lg);">Methods</h3>
+      <table class="demo-api-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Arguments</th>
+            <th>Returns</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="demo-api-table__prop">render()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">HTMLElement</td>
+            <td>Renders and returns the input container</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">validate()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>Runs all validators, returns true if valid</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">getValue()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">string</td>
+            <td>Returns current input value</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">setValue(value, validate?)</td>
+            <td class="demo-api-table__type">string, boolean</td>
+            <td>-</td>
+            <td>Sets input value, optionally validates</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">showError(message)</td>
+            <td class="demo-api-table__type">string</td>
+            <td>-</td>
+            <td>Displays an error message</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">clearError()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Clears the error message</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">reset()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Resets to initial state</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">focus()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Focuses the input</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">blur()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Blurs the input</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">setDisabled(disabled)</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>-</td>
+            <td>Sets the disabled state</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">isTouched()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>Returns true if input has been touched</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">hasError()</td>
+            <td>-</td>
+            <td class="demo-api-table__type">boolean</td>
+            <td>Returns true if input has an error</td>
+          </tr>
+          <tr>
+            <td class="demo-api-table__prop">destroy()</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Removes event listeners and cleans up</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Accessibility -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Accessibility</h2>
+      <div class="demo-a11y">
+        <h3 class="demo-a11y__title">
+          <span aria-hidden="true">&#x2713;</span>
+          Accessibility Features
+        </h3>
+        <ul class="demo-a11y__list">
+          <li><strong>Label Association:</strong> Labels properly linked via for/id attributes</li>
+          <li><strong>Required Indication:</strong> Visual (*) and semantic (required attribute)</li>
+          <li><strong>Error Announcements:</strong> aria-live="assertive" announces errors to screen readers</li>
+          <li><strong>Help Text:</strong> Associated via aria-describedby</li>
+          <li><strong>Invalid State:</strong> aria-invalid indicates validation errors</li>
+          <li><strong>Focus Indicator:</strong> Visible focus ring with 3:1 contrast ratio</li>
+          <li><strong>Keyboard Support:</strong> Full keyboard navigation</li>
+          <li><strong>iOS Zoom Prevention:</strong> Font size of 16px prevents unwanted zoom</li>
+        </ul>
+      </div>
+
+      <div class="demo-example" style="margin-top: var(--spacing-md);">
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">Generated HTML</span>
+          </div>
+          <pre><code>&lt;div class="input-field input-field--error"&gt;
+  &lt;label for="email" class="input-field__label"&gt;
+    Email Address
+    &lt;span class="input-field__required" aria-label="required"&gt;*&lt;/span&gt;
+  &lt;/label&gt;
+
+  &lt;input
+    type="email"
+    id="email"
+    name="email"
+    class="input-field__input"
+    aria-describedby="email-help email-error"
+    aria-invalid="true"
+    required
+  /&gt;
+
+  &lt;p id="email-help" class="input-field__help"&gt;
+    We'll never share your email.
+  &lt;/p&gt;
+
+  &lt;div id="email-error" class="input-field__error" role="alert" aria-live="assertive"&gt;
+    &lt;span class="input-field__error-icon" aria-hidden="true"&gt;!&lt;/span&gt;
+    &lt;span class="input-field__error-text"&gt;Please enter a valid email.&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Browser Support -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Browser Support</h2>
+      <div class="demo-browser-support">
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Chrome (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Firefox (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Safari (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Edge (latest)</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../../src/components/Button/Button.js"></script>
+  <script src="../../src/components/Input/validators.js"></script>
+  <script src="../../src/components/Input/Input.js"></script>
+  <script src="demo.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Types preview
+      const typesPreview = document.getElementById('types-preview');
+      if (typesPreview) {
+        const types = [
+          { type: 'text', label: 'Full Name', placeholder: 'John Doe' },
+          { type: 'email', label: 'Email', placeholder: 'you@example.com' },
+          { type: 'password', label: 'Password', placeholder: 'Enter password' }
+        ];
+
+        types.forEach(config => {
+          const input = new Input({
+            type: config.type,
+            name: `demo-${config.type}`,
+            label: config.label,
+            placeholder: config.placeholder
+          });
+          typesPreview.appendChild(input.render());
+        });
+      }
+
+      // Validation preview
+      const validationPreview = document.getElementById('validation-preview');
+      if (validationPreview) {
+        const requiredInput = new Input({
+          label: 'Required Field',
+          name: 'required-demo',
+          required: true,
+          helpText: 'This field is required'
+        });
+        validationPreview.appendChild(requiredInput.render());
+
+        const emailInput = new Input({
+          type: 'email',
+          label: 'Email with Validation',
+          name: 'email-demo',
+          validators: [validators.email()],
+          helpText: 'Type an invalid email and blur to see error'
+        });
+        validationPreview.appendChild(emailInput.render());
+      }
+
+      // States preview
+      const statesPreview = document.getElementById('states-preview');
+      if (statesPreview) {
+        const defaultInput = new Input({
+          label: 'Default',
+          name: 'default-demo',
+          placeholder: 'Enter text...'
+        });
+        statesPreview.appendChild(defaultInput.render());
+
+        const errorInput = new Input({
+          label: 'With Error',
+          name: 'error-demo',
+          value: 'Invalid value'
+        });
+        const errorEl = errorInput.render();
+        statesPreview.appendChild(errorEl);
+        errorInput.showError('This field has an error');
+
+        const disabledInput = new Input({
+          label: 'Disabled',
+          name: 'disabled-demo',
+          disabled: true,
+          value: 'Cannot edit'
+        });
+        statesPreview.appendChild(disabledInput.render());
+      }
+    });
+  </script>
+</body>
+</html>

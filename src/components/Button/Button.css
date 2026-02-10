@@ -1,0 +1,348 @@
+/**
+ * Button Component Styles
+ * =======================
+ * Styles for the Button component with all variants, sizes, and states.
+ * Uses BEM naming convention: .btn, .btn--variant, .btn__element
+ */
+
+/* ============================================
+   Base Button Styles
+   ============================================
+*/
+
+.btn {
+  /* Reset */
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  position: relative;
+  vertical-align: middle;
+
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+
+  /* Interaction */
+  cursor: pointer;
+  user-select: none;
+
+  /* Appearance */
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+
+  /* Transitions */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* ============================================
+   Button Sizes
+   ============================================
+*/
+
+/* Small button - min height 32px (touch target enhanced with padding) */
+.btn--small {
+  min-height: 2rem;
+  min-width: 2rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Medium button (default) - min height 40px */
+.btn--medium {
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-base);
+}
+
+/* Large button - min height 48px (WCAG recommended touch target) */
+.btn--large {
+  min-height: 3rem;
+  min-width: 3rem;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-lg);
+}
+
+/* ============================================
+   Button Variants
+   ============================================
+*/
+
+/* Primary Button - Main action */
+.btn--primary {
+  background-color: var(--color-primary-600);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary-600);
+}
+
+.btn--primary:hover:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-primary-700);
+  border-color: var(--color-primary-700);
+}
+
+.btn--primary:active:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-primary-800);
+  border-color: var(--color-primary-800);
+  transform: translateY(1px);
+}
+
+/* Secondary Button - Alternative action */
+.btn--secondary {
+  background-color: transparent;
+  color: var(--color-primary-700);
+  border-color: var(--color-primary-600);
+}
+
+.btn--secondary:hover:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-700);
+}
+
+.btn--secondary:active:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-primary-100);
+  border-color: var(--color-primary-800);
+  transform: translateY(1px);
+}
+
+/* Tertiary Button - Low-emphasis action */
+.btn--tertiary {
+  background-color: transparent;
+  color: var(--color-primary-700);
+  border-color: transparent;
+}
+
+.btn--tertiary:hover:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-neutral-100);
+  color: var(--color-primary-800);
+}
+
+.btn--tertiary:active:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-neutral-200);
+  color: var(--color-primary-900);
+  transform: translateY(1px);
+}
+
+/* Danger Button - Destructive action */
+.btn--danger {
+  background-color: var(--color-error-500);
+  color: var(--color-text-inverse);
+  border-color: var(--color-error-500);
+}
+
+.btn--danger:hover:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-error-700);
+  border-color: var(--color-error-700);
+}
+
+.btn--danger:active:not(:disabled):not(.btn--loading) {
+  background-color: var(--color-error-900);
+  border-color: var(--color-error-900);
+  transform: translateY(1px);
+}
+
+/* ============================================
+   Focus States
+   ============================================
+*/
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+}
+
+.btn--danger:focus-visible {
+  outline-color: var(--color-error-500);
+  box-shadow: var(--shadow-focus-error);
+}
+
+/* ============================================
+   Disabled State
+   ============================================
+*/
+
+.btn:disabled,
+.btn--disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Loading State
+   ============================================
+*/
+
+.btn--loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+/* Hide content during loading but maintain width */
+.btn--loading .btn__content {
+  visibility: hidden;
+}
+
+/* Show spinner during loading */
+.btn--loading .btn__spinner {
+  display: flex;
+}
+
+/* ============================================
+   Button Content Structure
+   ============================================
+*/
+
+.btn__content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn__text {
+  display: inline-block;
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn__icon svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+/* Icon positioning */
+.btn--icon-right .btn__content {
+  flex-direction: row-reverse;
+}
+
+/* ============================================
+   Loading Spinner
+   ============================================
+*/
+
+.btn__spinner {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+}
+
+.btn__spinner-icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.75s linear infinite;
+}
+
+@keyframes btn-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner sizes */
+.btn--small .btn__spinner-icon {
+  width: 1em;
+  height: 1em;
+  border-width: 1.5px;
+}
+
+.btn--large .btn__spinner-icon {
+  width: 1.5em;
+  height: 1.5em;
+  border-width: 2.5px;
+}
+
+/* ============================================
+   Full Width Button
+   ============================================
+*/
+
+.btn--full-width {
+  width: 100%;
+}
+
+/* ============================================
+   Button Group
+   ============================================
+*/
+
+.btn-group {
+  display: inline-flex;
+  gap: var(--spacing-sm);
+}
+
+.btn-group--vertical {
+  flex-direction: column;
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================
+*/
+
+@media (max-width: 767px) {
+  /* Ensure minimum touch target size on mobile */
+  .btn--small {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  .btn--medium {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .btn__spinner-icon {
+    animation-duration: 1.5s;
+  }
+}

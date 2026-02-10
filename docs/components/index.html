@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UI Component Library Documentation - Accessible, customizable components for your web applications">
+  <title>Component Library - Documentation</title>
+  <link rel="stylesheet" href="../../src/styles/main.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body class="demo-page">
+  <!-- Navigation -->
+  <nav class="demo-nav" aria-label="Documentation navigation">
+    <a href="index.html" class="demo-nav__logo">Component Library</a>
+    <div class="demo-nav__links">
+      <a href="index.html" class="demo-nav__link demo-nav__link--active">Home</a>
+      <a href="button.html" class="demo-nav__link">Button</a>
+      <a href="input.html" class="demo-nav__link">Input</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="demo-content">
+    <h1>UI Component Library</h1>
+    <p class="demo-section__description">
+      A collection of accessible, customizable UI components built with vanilla JavaScript and CSS.
+      Designed for ease of use, accessibility, and consistency across your web applications.
+    </p>
+
+    <!-- Quick Start -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Quick Start</h2>
+      <p class="demo-section__description">
+        Get started by including the CSS and JavaScript files in your HTML.
+      </p>
+
+      <div class="demo-example">
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">HTML</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>&lt;!-- Include styles --&gt;
+&lt;link rel="stylesheet" href="src/styles/main.css"&gt;
+
+&lt;!-- Include component scripts --&gt;
+&lt;script src="src/components/Button/Button.js"&gt;&lt;/script&gt;
+&lt;script src="src/components/Input/validators.js"&gt;&lt;/script&gt;
+&lt;script src="src/components/Input/Input.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+
+      <div class="demo-example">
+        <div class="demo-code">
+          <div class="demo-code__header">
+            <span class="demo-code__label">JavaScript</span>
+            <button type="button" class="demo-code__copy">Copy</button>
+          </div>
+          <pre><code>// Create a button
+const button = new Button({
+  text: 'Click me',
+  variant: 'primary',
+  onClick: () => alert('Hello!')
+});
+document.body.appendChild(button.render());
+
+// Create an input with validation
+const input = new Input({
+  type: 'email',
+  name: 'email',
+  label: 'Email Address',
+  required: true,
+  validators: [validators.email()]
+});
+document.body.appendChild(input.render());</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components Overview -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Available Components</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg);">
+        <!-- Button Card -->
+        <a href="button.html" class="demo-example" style="text-decoration: none; color: inherit;">
+          <div class="demo-preview demo-preview--centered" style="min-height: 150px;">
+            <div style="display: flex; gap: var(--spacing-sm);" id="button-preview"></div>
+          </div>
+          <div style="padding: var(--spacing-md);">
+            <h3 style="margin-bottom: var(--spacing-xs);">Button</h3>
+            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin: 0;">
+              Buttons with multiple variants, sizes, and states including loading and disabled.
+            </p>
+          </div>
+        </a>
+
+        <!-- Input Card -->
+        <a href="input.html" class="demo-example" style="text-decoration: none; color: inherit;">
+          <div class="demo-preview" style="min-height: 150px;">
+            <div id="input-preview" style="max-width: 300px;"></div>
+          </div>
+          <div style="padding: var(--spacing-md);">
+            <h3 style="margin-bottom: var(--spacing-xs);">Input</h3>
+            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin: 0;">
+              Input fields with built-in validation, error handling, and accessibility features.
+            </p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Design System -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Design System</h2>
+      <p class="demo-section__description">
+        The component library is built on a solid design system foundation with consistent colors, spacing, and typography.
+      </p>
+
+      <!-- Colors -->
+      <h3 style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">Colors</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-primary-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Primary</small>
+        </div>
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-secondary-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Secondary</small>
+        </div>
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-success-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Success</small>
+        </div>
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-warning-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Warning</small>
+        </div>
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-error-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Error</small>
+        </div>
+        <div style="width: 80px; text-align: center;">
+          <div style="width: 80px; height: 60px; background-color: var(--color-neutral-500); border-radius: var(--radius-md);"></div>
+          <small style="color: var(--color-text-secondary);">Neutral</small>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <h3 style="margin-top: var(--spacing-lg); margin-bottom: var(--spacing-md);">Spacing Scale</h3>
+      <div style="display: flex; align-items: flex-end; gap: var(--spacing-md); flex-wrap: wrap;">
+        <div style="text-align: center;">
+          <div style="width: 4px; height: 4px; background-color: var(--color-primary-500);"></div>
+          <small style="color: var(--color-text-secondary);">xs (4px)</small>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 8px; height: 8px; background-color: var(--color-primary-500);"></div>
+          <small style="color: var(--color-text-secondary);">sm (8px)</small>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 16px; height: 16px; background-color: var(--color-primary-500);"></div>
+          <small style="color: var(--color-text-secondary);">md (16px)</small>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 24px; height: 24px; background-color: var(--color-primary-500);"></div>
+          <small style="color: var(--color-text-secondary);">lg (24px)</small>
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 32px; height: 32px; background-color: var(--color-primary-500);"></div>
+          <small style="color: var(--color-text-secondary);">xl (32px)</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accessibility -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Accessibility</h2>
+      <div class="demo-a11y">
+        <h3 class="demo-a11y__title">
+          <span aria-hidden="true">&#x2713;</span>
+          WCAG 2.1 AA Compliant
+        </h3>
+        <ul class="demo-a11y__list">
+          <li>Full keyboard navigation support</li>
+          <li>Screen reader optimized with proper ARIA attributes</li>
+          <li>Color contrast ratios meet WCAG AA standards (4.5:1 minimum)</li>
+          <li>Focus indicators visible for all interactive elements</li>
+          <li>Reduced motion support for users who prefer it</li>
+          <li>Minimum touch target size of 44x44px on mobile</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Browser Support -->
+    <section class="demo-section">
+      <h2 class="demo-section__title">Browser Support</h2>
+      <div class="demo-browser-support">
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Chrome (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Firefox (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Safari (latest)</span>
+        </div>
+        <div class="demo-browser">
+          <span class="demo-browser__status"></span>
+          <span>Edge (latest)</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../../src/components/Button/Button.js"></script>
+  <script src="../../src/components/Input/validators.js"></script>
+  <script src="../../src/components/Input/Input.js"></script>
+  <script src="demo.js"></script>
+  <script>
+    // Initialize preview components
+    document.addEventListener('DOMContentLoaded', () => {
+      // Button preview
+      const buttonPreview = document.getElementById('button-preview');
+      if (buttonPreview) {
+        const btn1 = new Button({ text: 'Primary', variant: 'primary', size: 'small' });
+        const btn2 = new Button({ text: 'Secondary', variant: 'secondary', size: 'small' });
+        buttonPreview.appendChild(btn1.render());
+        buttonPreview.appendChild(btn2.render());
+      }
+
+      // Input preview
+      const inputPreview = document.getElementById('input-preview');
+      if (inputPreview) {
+        const input = new Input({
+          type: 'email',
+          label: 'Email',
+          placeholder: 'you@example.com'
+        });
+        inputPreview.appendChild(input.render());
+      }
+    });
+  </script>
+</body>
+</html>
