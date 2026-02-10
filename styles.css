@@ -1,0 +1,362 @@
+/* ============================================
+   CSS Reset and Base Styles
+   ============================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove list styles for navigation */
+ul {
+    list-style: none;
+}
+
+/* ============================================
+   CSS Custom Properties (Variables)
+   ============================================ */
+:root {
+    /* Colors - WCAG AA compliant */
+    --color-primary: #1a5f7a;
+    --color-primary-hover: #134a5f;
+    --color-background: #ffffff;
+    --color-background-alt: #f8f9fa;
+    --color-text: #212529;
+    --color-text-light: #495057;
+    --color-header-bg: #1a5f7a;
+    --color-header-text: #ffffff;
+    --color-footer-bg: #212529;
+    --color-footer-text: #f8f9fa;
+    --color-link: #1a5f7a;
+    --color-link-hover: #134a5f;
+    --color-focus: #0056b3;
+
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-base: 1rem;    /* 16px */
+    --spacing-md: 1.5rem;    /* 24px */
+    --spacing-lg: 2rem;      /* 32px */
+    --spacing-xl: 3rem;      /* 48px */
+
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-lg: 1.125rem;    /* 18px */
+    --font-size-xl: 1.25rem;     /* 20px */
+    --font-size-2xl: 1.5rem;     /* 24px */
+    --font-size-3xl: 2rem;       /* 32px */
+    --line-height-base: 1.6;
+    --line-height-heading: 1.3;
+
+    /* Layout */
+    --max-content-width: 1200px;
+    --header-height: auto;
+    --nav-height: auto;
+
+    /* Breakpoints (for reference - used in media queries) */
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+
+    /* Focus Styles */
+    --focus-ring-width: 3px;
+    --focus-ring-color: var(--color-focus);
+}
+
+/* ============================================
+   Base Body Styles and Layout Grid
+   ============================================ */
+html {
+    font-size: 100%; /* 16px base */
+    scroll-behavior: smooth;
+}
+
+body {
+    /* Typography */
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-text);
+    background-color: var(--color-background);
+
+    /* CSS Grid Layout - Mobile First (single column) */
+    display: grid;
+    grid-template-areas:
+        "header"
+        "nav"
+        "main"
+        "footer";
+    grid-template-rows: auto auto 1fr auto;
+    min-height: 100vh;
+
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
+}
+
+/* ============================================
+   Header Styles
+   ============================================ */
+.site-header {
+    grid-area: header;
+    background-color: var(--color-header-bg);
+    color: var(--color-header-text);
+    padding: var(--spacing-base);
+    text-align: center;
+}
+
+.site-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    line-height: var(--line-height-heading);
+    margin: 0;
+}
+
+/* ============================================
+   Navigation Styles
+   ============================================ */
+.main-nav {
+    grid-area: nav;
+    background-color: var(--color-background-alt);
+    border-bottom: 1px solid #dee2e6;
+    padding: var(--spacing-sm);
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    margin: 0;
+}
+
+.nav-link {
+    display: block;
+    padding: var(--spacing-sm) var(--spacing-base);
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    /* Minimum touch target size for accessibility */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+    color: var(--color-link-hover);
+}
+
+.nav-link:focus {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+    background-color: #e9ecef;
+}
+
+/* ============================================
+   Main Content Styles
+   ============================================ */
+.main-content {
+    grid-area: main;
+    padding: var(--spacing-base);
+    max-width: var(--max-content-width);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.content-section {
+    padding: var(--spacing-base) 0;
+}
+
+/* Content Typography */
+.main-content h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    line-height: var(--line-height-heading);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-base);
+}
+
+.main-content h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    color: var(--color-text);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.main-content p {
+    margin-bottom: var(--spacing-base);
+    max-width: 75ch; /* Optimal reading line length */
+}
+
+/* ============================================
+   Footer Styles
+   ============================================ */
+.site-footer {
+    grid-area: footer;
+    background-color: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    padding: var(--spacing-base);
+    text-align: center;
+}
+
+.footer-text {
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+/* ============================================
+   Focus Styles for Accessibility
+   ============================================ */
+/* Ensure all focusable elements have visible focus indicators */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+}
+
+/* Remove outline for mouse users while keeping for keyboard */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Responsive Styles - Tablet (768px and up)
+   ============================================ */
+@media (min-width: 768px) {
+    /* Header adjustments */
+    .site-header {
+        padding: var(--spacing-md);
+    }
+
+    .site-title {
+        font-size: var(--font-size-3xl);
+    }
+
+    /* Navigation - horizontal layout */
+    .main-nav {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .nav-list {
+        flex-direction: row;
+        justify-content: center;
+        gap: var(--spacing-sm);
+    }
+
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    /* Main content adjustments */
+    .main-content {
+        padding: var(--spacing-md);
+    }
+
+    .content-section {
+        padding: var(--spacing-md) 0;
+    }
+
+    /* Footer adjustments */
+    .site-footer {
+        padding: var(--spacing-md);
+    }
+}
+
+/* ============================================
+   Responsive Styles - Desktop (1024px and up)
+   ============================================ */
+@media (min-width: 1024px) {
+    /* Header adjustments */
+    .site-header {
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+
+    /* Navigation - full horizontal with more spacing */
+    .main-nav {
+        padding: var(--spacing-base) var(--spacing-xl);
+    }
+
+    .nav-list {
+        gap: var(--spacing-md);
+    }
+
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+
+    /* Main content - more generous spacing */
+    .main-content {
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+
+    .content-section {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .main-content h2 {
+        font-size: var(--font-size-3xl);
+    }
+
+    .main-content h3 {
+        font-size: var(--font-size-2xl);
+        margin-top: var(--spacing-lg);
+    }
+
+    /* Footer adjustments */
+    .site-footer {
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    background-color: var(--color-primary);
+    color: var(--color-header-text);
+    padding: var(--spacing-sm) var(--spacing-base);
+    z-index: 100;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    top: 0;
+}
