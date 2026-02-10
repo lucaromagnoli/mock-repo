@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "A simple UI component library with accessible, customizable components",
   "scripts": {
-    "test": "node tests/integration/components.test.js && node tests/accessibility/a11y.test.js",
+    "test": "node tests/integration/components.test.js && node tests/accessibility/a11y.test.js && node tests/integration/feedback-system.test.js",
     "test:integration": "node tests/integration/components.test.js",
+    "test:feedback": "node tests/integration/feedback-system.test.js",
     "test:a11y": "node tests/accessibility/a11y.test.js",
     "test:calculator": "node calculator.test.js"
   },

@@ -1,0 +1,600 @@
+/**
+ * Interactive Element Feedback Styles
+ * ====================================
+ * Global interactive states for all clickable/focusable elements.
+ * Provides consistent hover, active, focus, and disabled states.
+ */
+
+/* ============================================
+   CSS Custom Properties for Interactive States
+   ============================================
+*/
+
+:root {
+  /* Hover state adjustments */
+  --interactive-hover-brightness: 0.95;
+  --interactive-hover-shadow: var(--shadow-md);
+
+  /* Active state adjustments */
+  --interactive-active-brightness: 0.9;
+  --interactive-active-scale: 0.98;
+
+  /* Focus state */
+  --interactive-focus-ring: 0 0 0 3px rgba(33, 150, 243, 0.4);
+  --interactive-focus-ring-error: 0 0 0 3px rgba(244, 67, 54, 0.4);
+  --interactive-focus-outline-width: 2px;
+  --interactive-focus-outline-offset: 2px;
+
+  /* Disabled state */
+  --interactive-disabled-opacity: 0.5;
+
+  /* Transitions */
+  --interactive-transition: 150ms ease-out;
+  --interactive-transition-slow: 200ms ease-out;
+}
+
+/* ============================================
+   Link Interactive States
+   ============================================
+*/
+
+.link,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]) {
+  position: relative;
+  color: var(--color-primary-600);
+  text-decoration: none;
+  transition: color var(--interactive-transition);
+  cursor: pointer;
+}
+
+.link::after,
+a:not(.btn):not([class*="toast"]):not([class*="nav"])::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition:
+    width var(--interactive-transition-slow),
+    left var(--interactive-transition-slow);
+}
+
+.link:hover,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):hover {
+  color: var(--color-primary-700);
+}
+
+.link:hover::after,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.link:active,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):active {
+  color: var(--color-primary-800);
+}
+
+.link:focus,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):focus {
+  outline: none;
+}
+
+.link:focus-visible,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):focus-visible {
+  outline: var(--interactive-focus-outline-width) solid var(--color-primary-500);
+  outline-offset: var(--interactive-focus-outline-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Visited link styles */
+.link:visited,
+a:not(.btn):not([class*="toast"]):not([class*="nav"]):visited {
+  color: var(--color-secondary-600);
+}
+
+/* ============================================
+   Card Interactive States
+   ============================================
+*/
+
+.card,
+.card-interactive {
+  transition:
+    transform var(--interactive-transition-slow),
+    box-shadow var(--interactive-transition-slow);
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-interactive:active {
+  transform: translateY(0) scale(var(--interactive-active-scale));
+  box-shadow: var(--shadow-md);
+}
+
+.card-interactive:focus {
+  outline: none;
+}
+
+.card-interactive:focus-visible {
+  outline: var(--interactive-focus-outline-width) solid var(--color-primary-500);
+  outline-offset: var(--interactive-focus-outline-offset);
+}
+
+/* ============================================
+   General Interactive Element Focus States
+   ============================================
+*/
+
+/* Remove default outlines, add custom focus-visible styles */
+button:focus,
+[role="button"]:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+  box-shadow: var(--interactive-focus-ring);
+}
+
+/* ============================================
+   Touch Device Optimization
+   ============================================
+*/
+
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  .card-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .link:hover::after,
+  a:not(.btn):not([class*="toast"]):not([class*="nav"]):hover::after {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Reset hover styles for touch devices */
+@media (hover: none) {
+  .card-interactive:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .link:hover::after,
+  a:not(.btn):not([class*="toast"]):not([class*="nav"]):hover::after {
+    width: 0;
+    left: 50%;
+  }
+
+  /* Enhanced active states for touch */
+  .card-interactive:active {
+    transform: scale(0.98);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+/* ============================================
+   Disabled States
+   ============================================
+*/
+
+.disabled,
+[disabled],
+[aria-disabled="true"] {
+  opacity: var(--interactive-disabled-opacity);
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+/* Ensure disabled elements don't show interactive states */
+.disabled:hover,
+.disabled:active,
+.disabled:focus,
+[disabled]:hover,
+[disabled]:active,
+[disabled]:focus,
+[aria-disabled="true"]:hover,
+[aria-disabled="true"]:active,
+[aria-disabled="true"]:focus {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================
+   Form Validation Feedback
+   ============================================
+*/
+
+/* Shake animation for validation errors */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Success state for validated inputs */
+.input-success,
+.input-field--success .input-field__input {
+  border-color: var(--color-success-500) !important;
+}
+
+.input-field--success .input-field__input:focus {
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* ============================================
+   Interactive List Items
+   ============================================
+*/
+
+.list-item-interactive {
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition:
+    background-color var(--interactive-transition),
+    color var(--interactive-transition);
+  border-radius: var(--radius-sm);
+}
+
+.list-item-interactive:hover {
+  background-color: var(--color-neutral-100);
+}
+
+.list-item-interactive:active {
+  background-color: var(--color-neutral-200);
+}
+
+.list-item-interactive:focus {
+  outline: none;
+}
+
+.list-item-interactive:focus-visible {
+  box-shadow: var(--interactive-focus-ring);
+}
+
+.list-item-interactive.active,
+.list-item-interactive[aria-selected="true"] {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+/* ============================================
+   Icon Buttons
+   ============================================
+*/
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--interactive-transition),
+    color var(--interactive-transition),
+    transform var(--interactive-transition);
+}
+
+.icon-btn:hover {
+  background-color: var(--color-neutral-100);
+  color: var(--color-text-primary);
+}
+
+.icon-btn:active {
+  background-color: var(--color-neutral-200);
+  transform: scale(var(--interactive-active-scale));
+}
+
+.icon-btn:focus {
+  outline: none;
+}
+
+.icon-btn:focus-visible {
+  box-shadow: var(--interactive-focus-ring);
+}
+
+.icon-btn:disabled {
+  opacity: var(--interactive-disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Toggle/Switch States
+   ============================================
+*/
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle__track {
+  width: 3rem;
+  height: 1.5rem;
+  background-color: var(--color-neutral-300);
+  border-radius: var(--radius-full);
+  transition: background-color var(--interactive-transition);
+}
+
+.toggle__thumb {
+  position: absolute;
+  left: 2px;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--interactive-transition);
+}
+
+.toggle--active .toggle__track {
+  background-color: var(--color-primary-500);
+}
+
+.toggle--active .toggle__thumb {
+  transform: translateX(1.5rem);
+}
+
+.toggle:focus-visible {
+  outline: var(--interactive-focus-outline-width) solid var(--color-primary-500);
+  outline-offset: var(--interactive-focus-outline-offset);
+  border-radius: var(--radius-full);
+}
+
+/* ============================================
+   Checkbox and Radio Custom States
+   ============================================
+*/
+
+.checkbox-custom,
+.radio-custom {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-custom__input,
+.radio-custom__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-custom__box,
+.radio-custom__box {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-neutral-400);
+  background-color: var(--color-background);
+  transition:
+    border-color var(--interactive-transition),
+    background-color var(--interactive-transition),
+    box-shadow var(--interactive-transition);
+}
+
+.checkbox-custom__box {
+  border-radius: var(--radius-sm);
+}
+
+.radio-custom__box {
+  border-radius: 50%;
+}
+
+.checkbox-custom:hover .checkbox-custom__box,
+.radio-custom:hover .radio-custom__box {
+  border-color: var(--color-primary-500);
+}
+
+.checkbox-custom__input:checked + .checkbox-custom__box,
+.radio-custom__input:checked + .radio-custom__box {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-500);
+}
+
+.checkbox-custom__input:focus-visible + .checkbox-custom__box,
+.radio-custom__input:focus-visible + .radio-custom__box {
+  box-shadow: var(--interactive-focus-ring);
+}
+
+/* Checkmark */
+.checkbox-custom__box::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-custom__input:checked + .checkbox-custom__box::after {
+  display: block;
+}
+
+/* Radio dot */
+.radio-custom__box::after {
+  content: '';
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radio-custom__input:checked + .radio-custom__box::after {
+  display: block;
+}
+
+/* ============================================
+   Tab/Navigation Interactive States
+   ============================================
+*/
+
+.tab {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  position: relative;
+  transition:
+    color var(--interactive-transition),
+    background-color var(--interactive-transition);
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color var(--interactive-transition);
+}
+
+.tab:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-neutral-50);
+}
+
+.tab:focus {
+  outline: none;
+}
+
+.tab:focus-visible {
+  box-shadow: var(--interactive-focus-ring);
+}
+
+.tab[aria-selected="true"],
+.tab--active {
+  color: var(--color-primary-600);
+}
+
+.tab[aria-selected="true"]::after,
+.tab--active::after {
+  background-color: var(--color-primary-500);
+}
+
+/* ============================================
+   Ripple Effect (optional enhancement)
+   ============================================
+*/
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.ripple:active::before {
+  width: 200%;
+  height: 200%;
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .card-interactive:hover,
+  .card-interactive:active {
+    transform: none;
+  }
+
+  .link::after,
+  a:not(.btn):not([class*="toast"]):not([class*="nav"])::after {
+    transition: none;
+  }
+
+  .shake {
+    animation: none;
+  }
+
+  .ripple::before {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================
+*/
+
+@media print {
+  .link::after,
+  a::after {
+    display: none;
+  }
+
+  .card-interactive {
+    box-shadow: none;
+    border: 1px solid var(--color-neutral-300);
+  }
+}

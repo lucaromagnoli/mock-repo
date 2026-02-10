@@ -16,6 +16,8 @@ if (typeof module !== 'undefined' && module.exports) {
   const { Button, createButton, createButtons } = require('./Button/Button.js');
   const { Input, createInput } = require('./Input/Input.js');
   const { validators } = require('./Input/validators.js');
+  const { ToastManager } = require('./Toast/ToastManager.js');
+  const { LoadingManager, Spinner, LoadingOverlay } = require('./Loading/LoadingManager.js');
 
   module.exports = {
     // Button exports
@@ -27,5 +29,13 @@ if (typeof module !== 'undefined' && module.exports) {
     Input,
     createInput,
     validators,
+
+    // Toast exports
+    ToastManager,
+
+    // Loading exports
+    LoadingManager,
+    Spinner,
+    LoadingOverlay,
   };
 }
