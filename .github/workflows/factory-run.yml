@@ -6,10 +6,38 @@ on:
         description: 'Factory run ID'
         required: true
         type: string
+      repo:
+        description: 'Repository URL'
+        required: false
+        type: string
+      branch:
+        description: 'Branch name'
+        required: false
+        type: string
+      feature-id:
+        description: 'Feature ID'
+        required: false
+        type: string
+      feature:
+        description: 'Feature content'
+        required: false
+        type: string
+      feature-dir:
+        description: 'Feature directory path'
+        required: false
+        type: string
+      retry-attempts:
+        description: 'Max retry attempts'
+        required: false
+        type: string
 
 jobs:
   factory-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo run ID
-        run: echo "Run ID ${{ inputs.run-id }}"
+      - name: Echo run info
+        run: |
+          echo "Run ID: ${{ inputs.run-id }}"
+          echo "Repo: ${{ inputs.repo }}"
+          echo "Branch: ${{ inputs.branch }}"
+          echo "Feature ID: ${{ inputs.feature-id }}"
