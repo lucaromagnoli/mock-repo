@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  run:
+  factory-run:
     runs-on: ubuntu-latest
     steps:
       - name: Echo run ID
