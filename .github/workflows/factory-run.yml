@@ -1,0 +1,15 @@
+name: Factory Run
+on:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: 'Factory run ID'
+        required: true
+        type: string
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo run ID
+        run: echo "Run ID: ${{ inputs.run-id }}"
