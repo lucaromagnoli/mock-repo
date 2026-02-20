@@ -151,10 +151,10 @@ jobs:
             exit 1
           fi
 
-          # Build JSON array of story directory names
+          # Build JSON array of story directory names (compact for GH output)
           STORY_LIST=$(find "$STORIES_DIR" -mindepth 1 -maxdepth 1 -type d -name 'story-*' | sort | while read -r dir; do
             basename "$dir"
-          done | jq -R -s 'split("\n") | map(select(length > 0))')
+          done | jq -R -s -c 'split("\n") | map(select(length > 0))')
 
           echo "Discovered stories: $STORY_LIST"
           echo "story-list=${STORY_LIST}" >> "$GITHUB_OUTPUT"
