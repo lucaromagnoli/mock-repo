@@ -1,13 +1,11 @@
 # Claude Code Instructions
 
-**Note:** This file guides interactive Claude Code sessions. Automated workflow agents follow their own specialized prompts in `.factory/chart/`.
+**Note:** This file guides interactive Claude Code sessions. Workflows are executed via GitHub Actions.
 
 ## Key Directories
 
-- `.factory/chart/` - Argo Workflows and K8s resources
-- `.factory/marketplace/` - Claude agents and skills
 - `00-context/` - Project context (README, high-level goals, constraints)
-- `01-features/` - Feature development (features → stories → tasks)
+- `01-features/` - Feature development (features -> stories -> tasks)
 - `98-templates/` - Templates for features, stories, tasks
 - `99-knowledge/` - Project patterns and learnings
 
@@ -41,3 +39,11 @@ See `docs/feature-structure.md` for full details.
 **When You Learn Something New:**
 - Document patterns or gotchas in `99-knowledge/conventions.md`
 - Update helps future work avoid repeated mistakes
+
+## Running Workflows
+
+Use `factory submit` to run workflows:
+```bash
+# Handle a feature
+factory submit handle-feature -p feature-id=001-example
+```

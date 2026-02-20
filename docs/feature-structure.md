@@ -155,12 +155,12 @@ This document describes the hierarchical structure for organizing features, user
 
 ## Benefits of This Structure
 
-✅ **Traceability** - Clear path from feature → story → task
-✅ **Navigation** - Related artifacts live together
-✅ **Separation** - Product and technical concerns are distinct
-✅ **Scalability** - Easy to add new stories and tasks
-✅ **Collaboration** - PM and architects work in their domains
-✅ **Visibility** - Anyone can understand feature scope at any level
+- **Traceability** - Clear path from feature -> story -> task
+- **Navigation** - Related artifacts live together
+- **Separation** - Product and technical concerns are distinct
+- **Scalability** - Easy to add new stories and tasks
+- **Collaboration** - PM and architects work in their domains
+- **Visibility** - Anyone can understand feature scope at any level
 
 ## Related Agents
 

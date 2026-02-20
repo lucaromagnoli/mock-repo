@@ -1,4 +1,5 @@
 name: Factory Run
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,37 +8,259 @@ on:
         required: true
         type: string
       repo:
-        description: 'Repository URL'
-        required: false
+        description: 'Target repository (owner/repo)'
+        required: true
         type: string
       branch:
-        description: 'Branch name'
-        required: false
+        description: 'Target branch'
+        required: true
         type: string
       feature-id:
-        description: 'Feature ID'
-        required: false
-        type: string
-      feature:
-        description: 'Feature content'
-        required: false
+        description: 'Feature ID (e.g., 001-bootstrap)'
+        required: true
         type: string
       feature-dir:
         description: 'Feature directory path'
+        required: true
+        type: string
+      feature-content:
+        description: 'Feature content (base64-encoded markdown)'
         required: false
         type: string
-      retry-attempts:
-        description: 'Max retry attempts'
+      feature-content-encoding:
+        description: 'Encoding of feature-content (base64 or plain)'
         required: false
+        type: string
+      ANTHROPIC_API_KEY:
+        description: 'Claude API key'
+        required: true
+        type: string
+      ANTHROPIC_BASE_URL:
+        description: 'Claude API base URL'
+        required: false
+        type: string
+      GIT_TOKEN:
+        description: 'Git token for push/PR'
+        required: true
         type: string
 
+# Cancel previous runs for the same feature
+concurrency:
+  group: factory-${{ github.event.inputs.feature-id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  factory-run:
+  handle-feature:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ANTHROPIC_API_KEY: ${{ github.event.inputs.ANTHROPIC_API_KEY }}
+      ANTHROPIC_BASE_URL: ${{ github.event.inputs.ANTHROPIC_BASE_URL }}
+      GH_TOKEN: ${{ github.event.inputs.GIT_TOKEN }}
+      FEATURE_ID: ${{ github.event.inputs.feature-id }}
+      FEATURE_DIR: ${{ github.event.inputs.feature-dir }}
+      CODE: ${{ github.workspace }}
+
     steps:
-      - name: Echo run info
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.event.inputs.GIT_TOKEN }}
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Create feature branch
         run: |
-          echo "Run ID: ${{ inputs.run-id }}"
-          echo "Repo: ${{ inputs.repo }}"
-          echo "Branch: ${{ inputs.branch }}"
-          echo "Feature ID: ${{ inputs.feature-id }}"
+          BRANCH_NAME="feature/${FEATURE_ID}-${{ github.event.inputs.run-id }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> "$GITHUB_ENV"
+
+      - name: Setup feature
+        run: |
+          FEATURE_PATH="${CODE}/${FEATURE_DIR}"
+          echo "FEATURE_PATH=${FEATURE_PATH}" >> "$GITHUB_ENV"
+
+          mkdir -p "${FEATURE_PATH}"
+
+          # Write feature.md from input if provided
+          CONTENT="${{ github.event.inputs.feature-content }}"
+          ENCODING="${{ github.event.inputs.feature-content-encoding }}"
+          if [ -n "$CONTENT" ]; then
+            if [ "$ENCODING" = "base64" ]; then
+              echo "$CONTENT" | base64 -d > "${FEATURE_PATH}/feature.md"
+            else
+              echo "$CONTENT" > "${FEATURE_PATH}/feature.md"
+            fi
+          fi
+
+          # Verify feature.md exists
+          if [ ! -f "${FEATURE_PATH}/feature.md" ]; then
+            echo "::error::feature.md not found at ${FEATURE_PATH}/feature.md"
+            exit 1
+          fi
+
+          echo "Feature file:"
+          cat "${FEATURE_PATH}/feature.md"
+
+      - name: Extract agent system prompts
+        run: |
+          # Extract system prompt from agent markdown (content after second --- frontmatter delimiter)
+          extract_system_prompt() {
+            local agent_file="$1"
+            awk 'BEGIN{f=0} /^---$/{f++;next} f>=2' "$agent_file"
+          }
+
+          # Store extracted prompts for reuse
+          mkdir -p /tmp/agent-prompts
+          extract_system_prompt "${CODE}/.factory/agents/story-generator.md" > /tmp/agent-prompts/story-generator.txt
+          extract_system_prompt "${CODE}/.factory/agents/task-decomposer.md" > /tmp/agent-prompts/task-decomposer.txt
+          extract_system_prompt "${CODE}/.factory/agents/developer.md" > /tmp/agent-prompts/developer.txt
+
+      - name: Generate stories
+        run: |
+          # Render story prompt template
+          export FEATURE_ID FEATURE_DIR FEATURE_PATH CODE
+          envsubst < "${CODE}/98-templates/story-prompt-template.md" > /tmp/story-prompt.txt
+
+          echo "=== Generating stories for feature ${FEATURE_ID} ==="
+          claude --print \
+            --model sonnet \
+            --system-prompt "$(cat /tmp/agent-prompts/story-generator.txt)" \
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash" \
+            --permission-mode bypassPermissions \
+            < /tmp/story-prompt.txt
+
+      - name: Discover stories
+        id: discover
+        run: |
+          STORIES_DIR="${FEATURE_PATH}/stories"
+          if [ ! -d "$STORIES_DIR" ]; then
+            echo "::error::No stories directory found at ${STORIES_DIR}"
+            exit 1
+          fi
+
+          # Build JSON array of story directory names
+          STORY_LIST=$(find "$STORIES_DIR" -mindepth 1 -maxdepth 1 -type d -name 'story-*' | sort | while read -r dir; do
+            basename "$dir"
+          done | jq -R -s 'split("\n") | map(select(length > 0))')
+
+          echo "Discovered stories: $STORY_LIST"
+          echo "story-list=${STORY_LIST}" >> "$GITHUB_OUTPUT"
+
+          STORY_COUNT=$(echo "$STORY_LIST" | jq length)
+          if [ "$STORY_COUNT" -eq 0 ]; then
+            echo "::error::No stories were generated"
+            exit 1
+          fi
+          echo "Found ${STORY_COUNT} stories"
+
+      - name: Generate tasks
+        run: |
+          STORY_LIST='${{ steps.discover.outputs.story-list }}'
+
+          echo "$STORY_LIST" | jq -r '.[]' | while read -r STORY_NAME; do
+            echo "=== Generating tasks for ${STORY_NAME} ==="
+
+            STORY_PATH="${FEATURE_PATH}/stories/${STORY_NAME}"
+
+            # Render task prompt template
+            export FEATURE_ID FEATURE_DIR FEATURE_PATH CODE STORY_NAME STORY_PATH
+            # Clear task-specific vars (task-prompt-template supports both generation and implementation modes)
+            export TASK_NAME="" TASK_PATH="" FEATURE="${FEATURE_ID}"
+            envsubst < "${CODE}/98-templates/task-prompt-template.md" > /tmp/task-prompt.txt
+
+            # Append story content for context
+            echo "" >> /tmp/task-prompt.txt
+            echo "---" >> /tmp/task-prompt.txt
+            echo "## STORY CONTENT" >> /tmp/task-prompt.txt
+            echo "" >> /tmp/task-prompt.txt
+            cat "${STORY_PATH}/story.md" >> /tmp/task-prompt.txt
+
+            claude --print \
+              --model sonnet \
+              --system-prompt "$(cat /tmp/agent-prompts/task-decomposer.txt)" \
+              --allowedTools "Read,Write,Edit,Glob,Grep,Bash" \
+              --permission-mode bypassPermissions \
+              < /tmp/task-prompt.txt
+          done
+
+      - name: Implement stories
+        run: |
+          STORY_LIST='${{ steps.discover.outputs.story-list }}'
+
+          echo "$STORY_LIST" | jq -r '.[]' | while read -r STORY_NAME; do
+            echo "=== Implementing ${STORY_NAME} ==="
+
+            STORY_DIR="${FEATURE_PATH}/stories/${STORY_NAME}"
+
+            # Render implementation prompt template
+            export CODE STORY_DIR
+            envsubst < "${CODE}/98-templates/story-impl-prompt-template.md" > /tmp/impl-prompt.txt
+
+            claude --print \
+              --model sonnet \
+              --system-prompt "$(cat /tmp/agent-prompts/developer.txt)" \
+              --allowedTools "Read,Write,Edit,Glob,Grep,Bash" \
+              --permission-mode bypassPermissions \
+              < /tmp/impl-prompt.txt
+          done
+
+      - name: Configure git
+        run: |
+          git config user.name "factory-bot"
+          git config user.email "factory-bot@users.noreply.github.com"
+
+      - name: Push and create PR
+        run: |
+          # Stage and commit all changes
+          git add -A
+          if git diff --cached --quiet; then
+            echo "::warning::No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "feat: implement feature ${FEATURE_ID}
+
+          Automated by Factory (run: ${{ github.event.inputs.run-id }})"
+
+          # Push the feature branch
+          REMOTE_URL="https://x-access-token:${{ github.event.inputs.GIT_TOKEN }}@github.com/${{ github.repository }}.git"
+          git remote set-url origin "$REMOTE_URL"
+          git push -u origin "$BRANCH_NAME" --force
+
+          # Create PR
+          PR_TITLE="feat: ${FEATURE_ID}"
+          PR_BODY="## Feature: ${FEATURE_ID}
+
+          Automated implementation by Factory.
+
+          **Run ID:** ${{ github.event.inputs.run-id }}
+          **Branch:** ${BRANCH_NAME}"
+
+          PR_URL=$(gh pr create \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --base "${{ github.event.inputs.branch }}" \
+            --head "$BRANCH_NAME" 2>&1) || true
+
+          echo "PR: $PR_URL"
+
+          # Close old PRs with the same title prefix
+          OLD_PRS=$(gh pr list --state open --search "feat: ${FEATURE_ID} in:title" --json number,headBranch --jq ".[] | select(.headBranch != \"${BRANCH_NAME}\") | .number")
+          for PR_NUM in $OLD_PRS; do
+            echo "Closing superseded PR #${PR_NUM}"
+            gh pr comment "$PR_NUM" --body "Superseded by new PR: ${PR_URL}"
+            gh pr close "$PR_NUM"
+          done
