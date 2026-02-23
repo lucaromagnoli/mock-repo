@@ -133,22 +133,26 @@ jobs:
           git config user.name "factory-bot"
           git config user.email "factory-bot@users.noreply.github.com"
 
-          # Stage any unstaged changes Claude may have left
-          git add -A
+          # Restore workflow files to their original state (Claude must not modify these)
+          git checkout origin/${{ github.event.repository.default_branch }} -- .github/workflows/ 2>/dev/null || true
 
-          # Check if there are staged changes OR new commits from Claude
-          if git diff --cached --quiet && [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/${{ github.event.repository.default_branch }})" ]; then
+          # Stage everything except workflow files
+          git add -A ':!.github/workflows/'
+
+          # Squash all changes (Claude's commits + unstaged) into a single clean commit
+          BASE=$(git rev-parse origin/${{ github.event.repository.default_branch }})
+          git reset --soft "$BASE"
+          git add -A ':!.github/workflows/'
+
+          if git diff --cached --quiet; then
             echo "::warning::No changes to commit"
             echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
             exit 0
           fi
 
-          # Commit any remaining staged changes (Claude may have already committed)
-          if ! git diff --cached --quiet; then
-            git commit -m "feat: implement issue #${ISSUE_NUMBER}
+          git commit -m "feat: implement issue #${ISSUE_NUMBER}
 
           Automated by Factory Issue Handler"
-          fi
 
           git push -u origin "$BRANCH_NAME" --force
           echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
