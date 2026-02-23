@@ -122,16 +122,22 @@ jobs:
           git config user.name "factory-bot"
           git config user.email "factory-bot@users.noreply.github.com"
 
+          # Stage any unstaged changes Claude may have left
           git add -A
-          if git diff --cached --quiet; then
+
+          # Check if there are staged changes OR new commits from Claude
+          if git diff --cached --quiet && [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/${{ github.event.repository.default_branch }})" ]; then
             echo "::warning::No changes to commit"
             echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
             exit 0
           fi
 
-          git commit -m "feat: implement issue #${ISSUE_NUMBER}
+          # Commit any remaining staged changes (Claude may have already committed)
+          if ! git diff --cached --quiet; then
+            git commit -m "feat: implement issue #${ISSUE_NUMBER}
 
           Automated by Factory Issue Handler"
+          fi
 
           git push -u origin "$BRANCH_NAME" --force
           echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
