@@ -1,0 +1,182 @@
+name: Factory Issue Handler
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+# One run per issue at a time
+concurrency:
+  group: factory-issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  handle-issue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Only run if body contains @factory
+    if: >-
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@factory')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@factory'))
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+    steps:
+      - name: React with eyes to acknowledge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (context.eventName === 'issue_comment') {
+              await github.rest.reactions.createForIssueComment({
+                ...context.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes',
+              });
+            } else {
+              await github.rest.reactions.createForIssue({
+                ...context.repo,
+                issue_number: context.issue.number,
+                content: 'eyes',
+              });
+            }
+
+      - name: Extract issue content
+        id: extract
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            let prompt = '';
+
+            if (context.eventName === 'issue_comment') {
+              const comment = context.payload.comment;
+              prompt = `GitHub Issue #${issue.number}: ${issue.title}\n\nOriginal issue:\n${issue.body}\n\nNew comment (act on this):\n${comment.body}`;
+            } else {
+              prompt = `GitHub Issue #${issue.number}: ${issue.title}\n\n${issue.body}`;
+            }
+
+            // Strip the @factory mention from the prompt
+            prompt = prompt.replace(/@factory\b/g, '').trim();
+
+            const fs = require('fs');
+            fs.writeFileSync('/tmp/issue-prompt.txt', prompt);
+
+            // Create a slug from the issue title for the branch name
+            const slug = issue.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-|-$/g, '')
+              .substring(0, 40);
+            core.setOutput('branch', `issue/${issue.number}-${slug}`);
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create feature branch
+        run: |
+          BRANCH_NAME="${{ steps.extract.outputs.branch }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> "$GITHUB_ENV"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Extract developer agent prompt
+        run: |
+          AGENT_FILE="${GITHUB_WORKSPACE}/.factory/agents/developer.md"
+          if [ -f "$AGENT_FILE" ]; then
+            # Extract system prompt: content after second --- frontmatter delimiter
+            awk 'BEGIN{f=0} /^---$/{f++;next} f>=2' "$AGENT_FILE" > /tmp/developer-system-prompt.txt
+          else
+            echo "No developer agent found at $AGENT_FILE, using default prompt" >&2
+            echo "You are a software developer. Implement the requested changes, write clean code, and follow existing project conventions." > /tmp/developer-system-prompt.txt
+          fi
+
+      - name: Run Claude
+        run: |
+          claude --print \
+            --model sonnet \
+            --system-prompt "$(cat /tmp/developer-system-prompt.txt)" \
+            --allowedTools "Read,Write,Edit,Glob,Grep,Bash" \
+            --permission-mode bypassPermissions \
+            < /tmp/issue-prompt.txt
+
+      - name: Configure git and push
+        run: |
+          git config user.name "factory-bot"
+          git config user.email "factory-bot@users.noreply.github.com"
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "::warning::No changes to commit"
+            echo "HAS_CHANGES=false" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          git commit -m "feat: implement issue #${ISSUE_NUMBER}
+
+          Automated by Factory Issue Handler"
+
+          git push -u origin "$BRANCH_NAME" --force
+          echo "HAS_CHANGES=true" >> "$GITHUB_ENV"
+
+      - name: Create pull request
+        if: env.HAS_CHANGES == 'true'
+        id: create-pr
+        run: |
+          PR_URL=$(gh pr create \
+            --title "feat: resolve issue #${ISSUE_NUMBER}" \
+            --body "## Summary
+
+          Automated implementation for #${ISSUE_NUMBER}.
+
+          Closes #${ISSUE_NUMBER}
+
+          ---
+          *Generated by Factory Issue Handler*" \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "$BRANCH_NAME" 2>&1) || true
+
+          echo "PR_URL=$PR_URL" >> "$GITHUB_ENV"
+          echo "Created PR: $PR_URL"
+
+      - name: Comment on issue with PR link
+        if: env.HAS_CHANGES == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prUrl = process.env.PR_URL;
+            if (prUrl && prUrl.startsWith('https://')) {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body: `🚀 I've created a pull request to address this issue: ${prUrl}`,
+              });
+            }
+
+      - name: Comment on issue if no changes
+        if: env.HAS_CHANGES == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `I looked into this issue but didn't find any code changes to make. Please provide more details or clarify the request.`,
+            });
