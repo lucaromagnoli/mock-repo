@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      background: #222;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      width: 280px;
+    }
+
+    /* Display */
+    .display {
+      background: #111;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      text-align: right;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .display .expression {
+      color: #888;
+      font-size: 14px;
+      min-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .display .current {
+      color: #fff;
+      font-size: 32px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Button grid */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 16px 0;
+      transition: filter 0.1s ease;
+      color: #fff;
+    }
+
+    button:active {
+      filter: brightness(0.8);
+    }
+
+    /* Number buttons */
+    .btn-num {
+      background: #444;
+    }
+
+    /* Operator buttons */
+    .btn-op {
+      background: #f59e0b;
+    }
+
+    /* Clear / backspace */
+    .btn-clear {
+      background: #ef4444;
+    }
+
+    /* Equals */
+    .btn-equals {
+      background: #22c55e;
+    }
+
+    /* Zero spans two columns */
+    .btn-zero {
+      grid-column: span 2;
+    }
+
+    /* Decimal point */
+    .btn-dot {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <!-- Display area -->
+    <div class="display">
+      <div class="expression" id="expression"></div>
+      <div class="current" id="current">0</div>
+    </div>
+
+    <!-- Button grid -->
+    <div class="buttons">
+      <!-- Row 1 -->
+      <button class="btn-clear" id="btn-clear">C</button>
+      <button class="btn-op"    id="btn-sign">+/−</button>
+      <button class="btn-op"    id="btn-percent">%</button>
+      <button class="btn-op"    data-op="÷">÷</button>
+
+      <!-- Row 2 -->
+      <button class="btn-num" data-digit="7">7</button>
+      <button class="btn-num" data-digit="8">8</button>
+      <button class="btn-num" data-digit="9">9</button>
+      <button class="btn-op"  data-op="×">×</button>
+
+      <!-- Row 3 -->
+      <button class="btn-num" data-digit="4">4</button>
+      <button class="btn-num" data-digit="5">5</button>
+      <button class="btn-num" data-digit="6">6</button>
+      <button class="btn-op"  data-op="−">−</button>
+
+      <!-- Row 4 -->
+      <button class="btn-num" data-digit="1">1</button>
+      <button class="btn-num" data-digit="2">2</button>
+      <button class="btn-num" data-digit="3">3</button>
+      <button class="btn-op"  data-op="+">+</button>
+
+      <!-- Row 5 -->
+      <button class="btn-num btn-zero" data-digit="0">0</button>
+      <button class="btn-dot" id="btn-dot">.</button>
+      <button class="btn-equals" id="btn-equals">=</button>
+    </div>
+  </div>
+
+  <script src="calculator-ui.js"></script>
+</body>
+</html>
